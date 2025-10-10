@@ -72,3 +72,179 @@
     "TotalComprobante": "1130.00"
   }
 }
+
+
+// Crear instancia de factura
+const factura = new FacturaElectronica(facturaData);
+
+// Ejemplo: convertir a XML (sin firmar todavía)
+const xml = factura.getXMLSinFirma(); // o factura.toXML() según versión del SDK
+
+console.log(xml);
+-------------------------------------------------------------------------------------------
+
+SEGUNDO VALIDADOR DE ESPACIOS NECESARIOS
+{
+  "Clave": "50601012500310112345600100001010000000011100000001",
+  "CodigoActividad": "123456",
+  "NumeroConsecutivo": "00100001010000000001",
+  "FechaEmision": "2025-10-03T15:00:00-06:00",
+
+  "Emisor": {
+    "Nombre": "EMPRESA DE EJEMPLO S.A.",
+    "Identificacion": {
+      "Tipo": "02",
+      "Numero": "3010112345"
+    },
+    "Ubicacion": {
+      "Provincia": "1",
+      "Canton": "01",
+      "Distrito": "01",
+      "OtrasSenas": "Dirección exacta"
+    },
+    "CorreoElectronico": "emisor@ejemplo.com",
+    "Telefono": {
+      "CodigoPais": "506",
+      "NumTelefono": "88888888"
+    }
+  },
+
+  "Receptor": {
+    "Nombre": "Cliente Ejemplo",
+    "Identificacion": {
+      "Tipo": "01",
+      "Numero": "305270415"
+    },
+    "CorreoElectronico": "cliente@ejemplo.com"
+  },
+
+  "CondicionVenta": "01",
+  "MedioPago": ["01"],
+
+  "DetalleServicio": {
+    "LineaDetalle": [
+      {
+        "NumeroLinea": 1,
+        "Cantidad": "1",
+        "UnidadMedida": "Sp",
+        "Detalle": "Servicio profesional de ejemplo",
+        "Codigo": "10101500",
+        "PrecioUnitario": "1000.00",
+        "MontoTotal": "1000.00",
+        "SubTotal": "1000.00",
+        "BaseImponible": "1000.00",
+        "Impuesto": [
+          {
+            "Codigo": "01",
+            "Tarifa": "13",
+            "Monto": "130.00"
+          }
+        ],
+        "MontoTotalLinea": "1130.00"
+      }
+    ]
+  },
+
+  "ResumenFactura": {
+    "CodigoMoneda": "CRC",
+    "TotalServGravados": "1000.00",
+    "TotalServExentos": "0.00",
+    "TotalMercanciasGravadas": "0.00",
+    "TotalMercanciasExentas": "0.00",
+    "TotalGravado": "1000.00",
+    "TotalExento": "0.00",
+    "TotalVenta": "1000.00",
+    "TotalDescuentos": "0.00",
+    "TotalVentaNeta": "1000.00",
+    "TotalImpuesto": "130.00",
+    "TotalComprobante": "1130.00"
+  }
+}
+
+----------------------------------------------------------------------------------------------------
+ESTRUCTURA NECESARIA ULTIMA ACTUALIZACION 
+const FacturaModel = {
+  emitter: {
+    fullName: '',
+    commercialName: '',
+    activityCode: '',
+    identifier: {
+      type: '',
+      id: ''
+    },
+    location: {
+      province: '',
+      canton: '',
+      district: '',
+      neighborhood: '',
+      details: ''
+    },
+    email: '',
+    fax: {
+      countryCode: '',
+      number: ''
+    },
+    phone: {
+      countryCode: '',
+      number: ''
+    }
+  },
+  branch: '',
+  terminal: '',
+  documentName: '',
+  providerId: '',
+  countryCode: '',
+  securityCode: '',
+  activityCode: '',
+  consecutiveIdentifier: '',
+  ceSituation: '',
+  orderLines: [
+    {
+      detail: '',
+      unitaryPrice: 0,
+      lineNumber: '',
+      code: '',
+      quantity: 0,
+      measureUnit: '',
+      totalAmount: 0,
+      subTotal: 0,
+      tax: {
+        code: '',
+        rateCode: '',
+        rate: 0,
+        amount: 0
+      },
+      totalOrderLineAmount: 0
+    }
+  ],
+  referenceInfo: {},
+  conditionSale: '',
+  paymentMethod: '',
+  currencyCode: '',
+  exchangeRate: '',
+  receiver: {
+    fullName: '',
+    commercialName: '',
+    activityCode: '',
+    identifier: {
+      type: '',
+      id: ''
+    },
+    location: {
+      province: '',
+      canton: '',
+      district: '',
+      neighborhood: '',
+      details: ''
+    },
+    email: '',
+    fax: {
+      countryCode: '',
+      number: ''
+    },
+    phone: {
+      countryCode: '',
+      number: ''
+    }
+  }
+};

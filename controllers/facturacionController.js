@@ -2,7 +2,7 @@
 const {getAccessToken} = require('../services/idpService')
 const { ATV } = require('@facturacr/atv-sdk');
 const fs = require('fs');
-
+const axios = require('axios');
 // Configuración del SDK (puedes usar variables de entorno)
 const atv = new ATV({
   username: process.env.HACIENDA_USERNAME,
@@ -11,6 +11,33 @@ const atv = new ATV({
   key: process.env.HACIENDA_KEY,
   production: false // Cambia a true en producción
 });
+
+/**
+ * Consulta información de un contribuyente en el API de Hacienda.
+ */
+async function consultarContribuyente(req, res) {
+  try {
+    const { identificacion } = req.query;
+    if (!identificacion) {
+      return res.status(400).json({ success: false, message: 'Debe enviar el parámetro identificacion.' });
+    }
+
+    const url = `https://api.hacienda.go.cr/fe/ae?identificacion=${identificacion}`;
+    const respuesta = await axios.get(url);
+
+    return res.status(200).json({
+      success: true,
+      data: respuesta.data
+    });
+  } catch (error) {
+    console.error('Error al consultar contribuyente:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'No se pudo consultar el contribuyente.',
+      error: error.message
+    });
+  }
+}
 
 // Validación básica de campos requeridos
 function validarCampos(obj, campos) {
@@ -141,4 +168,87 @@ exports.consultarFactura = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+/**
+ * Emite una factura electrónica.
+ * Valida datos críticos antes de llamar al SDK y maneja errores globalmente.
+ */
+async function emitirFactura(req, res) {
+  try {
+    const factura = req.body;
+
+    // Validación adicional de datos críticos
+    if (!factura.documentName || typeof factura.documentName !== 'string') {
+      return res.status(400).json({ success: false, message: 'documentName es obligatorio y debe ser string.' });
+    }
+    if (!factura.emitter || !factura.emitter.identifier || !factura.emitter.identifier.id) {
+      return res.status(400).json({ success: false, message: 'El emisor y su identificador son obligatorios.' });
+    }
+    if (!factura.orderLines || !Array.isArray(factura.orderLines) || factura.orderLines.length === 0) {
+      return res.status(400).json({ success: false, message: 'Debe incluir al menos una línea de detalle.' });
+    }
+
+    // Lógica de emisión usando el SDK
+    // (Ajusta según el método real de tu SDK)
+    const resultado = await atv.genXML(factura);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Factura emitida correctamente.',
+      data: resultado
+    });
+  } catch (error) {
+    console.error('Error al emitir factura:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ocurrió un error al emitir la factura.',
+      error: error.message
+    });
+  }
+}
+
+/**
+ * Confirma un comprobante electrónico ante Hacienda.
+ * Manejo global de errores.
+ */
+async function confirmarComprobante(req, res) {
+  try {
+    const { url } = req.body;
+    const token = req.headers['authorization']?.replace('bearer ', '');
+
+    if (!url) {
+      return res.status(400).json({ success: false, message: 'El campo url es obligatorio.' });
+    }
+    if (!token) {
+      return res.status(400).json({ success: false, message: 'El token de autorización es obligatorio.' });
+    }
+
+    // Lógica de confirmación usando el SDK
+    const resultado = await atv.sendConfirmation({
+      url,
+      headers: {
+        Authorization: 'bearer ' + token,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Comprobante confirmado correctamente.',
+      data: resultado
+    });
+  } catch (error) {
+    console.error('Error al confirmar comprobante:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ocurrió un error al confirmar el comprobante.',
+      error: error.message
+    });
+  }
+}
+
+module.exports = {
+  emitirFactura,
+  confirmarComprobante,
+  consultarContribuyente
 };
