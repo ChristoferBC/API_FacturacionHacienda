@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# Env files
+.env
+
+# Certificados de desarrollo (no subir)
+assets/certificados/*.p12
+assets/certificados/*.key
+
+# Otros
+.DS_Store

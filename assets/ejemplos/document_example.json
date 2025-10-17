@@ -1,0 +1,35 @@
+{
+  "document": {
+    "documentName": "FacturaElectronica",
+    "providerId": "PROVIDER_ID",
+    "countryCode": "506",
+    "securityCode": "12345678",
+    "activityCode": "930903",
+    "consecutiveIdentifier": "1",
+    "ceSituation": "1",
+    "branch": "1",
+    "terminal": "1",
+    "emitter": {
+      "fullName": "EMPRESA S.A",
+      "identifier": { "type": "01", "id": "206920142" },
+      "activityCode": "930903",
+      "location": { "province": "2", "canton": "06", "district": "04", "neighborhood": "00006", "details": "Dirección" }
+    },
+    "receiver": {
+      "fullName": "CLIENTE",
+      "identifier": { "type": "02", "id": "3101538252" },
+      "activityCode": "930903",
+      "location": { "province": "2", "canton": "01", "district": "08", "neighborhood": "00001", "details": "Dirección cliente" }
+    },
+    "orderLines": [
+      {
+        "detail": "Producto X",
+        "unitaryPrice": 100,
+        "quantity": 1,
+        "tax": { "code": "01", "rateCode": "08", "rate": 13 }
+      }
+    ],
+    "conditionSale": "01",
+    "paymentMethod": "01"
+  }
+}

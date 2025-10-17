@@ -1,0 +1,88 @@
+/*
+   USO DEL SDK PASO A PASO (GUÍA para integrar en tu propio proyecto)
+
+   1) Instalar/añadir el SDK a tu proyecto
+      - Si el SDK está publicado en npm: `npm install @facturacr/atv-sdk` o `yarn add @facturacr/atv-sdk`.
+      - Si trabajas con el código fuente (este repo), copia la carpeta `src` o añade el paquete como dependencia local.
+
+   2) Configurar credenciales y archivos necesarios
+      - Usuario y contraseña ATV (proporcionados por Hacienda para integración).
+      - Certificado digital del emisor en formato .p12 y su contraseña.
+      - Datos del comprobante (objeto `document`) con la estructura requerida.
+
+   3) Flujo básico para crear y enviar una factura
+      - Obtener token: llama a `getToken(username, password)` y guarda `accessToken`.
+      - Crear y firmar el comprobante: llama a `createDocumentCommand({ document, token, signatureOptions })`.
+        * `signatureOptions.buffer` debe contener el .p12 leído en modo 'binary' (Buffer o string binary).
+        * `signatureOptions.password` es la contraseña del .p12.
+      - Enviar comprobante: llama a `sendDocument(command)` con el `command` devuelto por `createDocumentCommand`.
+      - Consultar confirmación: si `sendDocument` devuelve un `location`, llama a `sendConfirmation({ url: location, headers })`.
+
+   4) Estructura del objeto `CreateDocumentInput.document` (resumen):
+      - emitter: información del emisor (nombre, identificador, dirección, etc.)
+      - receiver: información del receptor (para facturas; opcional en tiquetes)
+      - branch: sucursal (ej: '001')
+      - terminal: terminal (ej: '00001')
+      - documentName: 'FacturaElectronica' | 'TiqueteElectronico' | ...
+      - providerId, countryCode, securityCode, activityCode, consecutiveIdentifier, ceSituation
+      - orderLines: arreglo con las líneas (detail, unitaryPrice, quantity, tax, etc.)
+      - conditionSale, paymentMethod, currencyCode, exchangeRate (opcional)
+
+   5) Ejemplo mínimo de uso con esta clase (async/await)
+      const runner = new SdkExampleRunner('stg');
+
+      // Obtener token
+      const tokenData = await runner.getToken('USUARIO', 'CONTRASEÑA');
+
+      // Preparar el objeto document (ejemplo simplificado)
+      const document = {
+        documentName: 'FacturaElectronica',
+        providerId: 'PROVIDER_ID',
+        countryCode: '506',
+        securityCode: '12345678',
+        activityCode: '930903',
+        consecutiveIdentifier: '1',
+        ceSituation: '1',
+        branch: '1',
+        terminal: '1',
+        emitter: {
+          fullName: 'EMPRESA S.A',
+          identifier: { type: '01', id: '206920142' },
+          activityCode: '930903',
+          location: { province: '2', canton: '06', district: '04', neighborhood: '00006', details: 'Dirección' },
+        },
+        receiver: {
+          fullName: 'CLIENTE',
+          identifier: { type: '02', id: '3101538252' },
+          activityCode: '930903',
+          location: { province: '2', canton: '01', district: '08', neighborhood: '00001', details: 'Dirección cliente' }
+        },
+        orderLines: [ { detail: 'Producto X', unitaryPrice: 100, quantity: 1, tax: { code: '01', rateCode: '08', rate: 13 } } ],
+        conditionSale: '01',
+        paymentMethod: '01'
+      };
+
+      // Crear y enviar
+      const { response, extraData } = await runner.createAndSendDocument({
+        document,
+        token: tokenData.accessToken,
+        p12Path: './certs/client-identity.p12',
+        p12Password: 'P12_PASSWORD'
+      });
+
+      // Consultar
+      if (response.location) {
+        const confirm = await runner.consultDocument({ location: response.location, token: tokenData.accessToken });
+        console.log(confirm);
+      }
+
+   6) Validaciones recomendadas antes de enviar
+      - Validar que `document` contiene los campos obligatorios (emitter, branch, terminal, orderLines, etc.).
+      - Validar que el .p12 existe y la contraseña es correcta (puedes intentar parsearlo localmente).
+      - Manejar errores de red y respuestas de Hacienda (reintentos, logging, persistencia de estado).
+
+   7) Notas finales
+      - Para producción cambia el env a 'prod' en el constructor.
+      - Revisa los ejemplos en la carpeta `examples/` para casos más completos (creación de notas, tiquetes, receptor messages).
+      - Si quieres, puedo generar un archivo de ejemplo listo para ejecutar en tu proyecto.
+  

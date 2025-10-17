@@ -1,91 +1,129 @@
-// Modelo de Factura para validación y referencia de estructura
-const FacturaModel = {
+
+// Nuevo objeto solicitado (ejemplo base como deberia verse la factura completa)
+const document = {
+  documentName: 'FacturaElectronica',
+  providerId: 'PROVIDER_ID',
+  countryCode: '506',
+  securityCode: '12345678',
+  activityCode: '930903',
+  consecutiveIdentifier: '1',
+  ceSituation: '1',
+  branch: '1',
+  terminal: '1',
   emitter: {
-    fullName: '',
-    commercialName: '',
-    activityCode: '',
-    identifier: {
-      type: '',
-      id: ''
-    },
-    location: {
-      province: '',
-      canton: '',
-      district: '',
-      neighborhood: '',
-      details: ''
-    },
-    email: '',
-    fax: {
-      countryCode: '',
-      number: ''
-    },
-    phone: {
-      countryCode: '',
-      number: ''
-    }
+    fullName: 'EMPRESA S.A',
+    identifier: { type: '01', id: '206920142' },
+    activityCode: '930903',
+    location: { province: '2', canton: '06', district: '04', neighborhood: '00006', details: 'Dirección' }
   },
-  branch: '',
-  terminal: '',
-  documentName: '',
-  providerId: '',
-  countryCode: '',
-  securityCode: '',
-  activityCode: '',
-  consecutiveIdentifier: '',
-  ceSituation: '',
+  receiver: {
+    fullName: 'CLIENTE',
+    identifier: { type: '02', id: '3101538252' },
+    activityCode: '930903',
+    location: { province: '2', canton: '01', district: '08', neighborhood: '00001', details: 'Dirección cliente' }
+  },
   orderLines: [
     {
-      detail: '',
-      unitaryPrice: 0,
-      lineNumber: '',
-      code: '',
-      quantity: 0,
-      measureUnit: '',
-      totalAmount: 0,
-      subTotal: 0,
-      tax: {
-        code: '',
-        rateCode: '',
-        rate: 0,
-        amount: 0
-      },
-      totalOrderLineAmount: 0
+      detail: 'Producto X',
+      unitaryPrice: 100,
+      quantity: 1,
+      tax: { code: '01', rateCode: '08', rate: 13 }
     }
   ],
-  referenceInfo: {},
-  conditionSale: '',
-  paymentMethod: '',
-  currencyCode: '',
-  exchangeRate: '',
-  receiver: {
-    fullName: '',
-    commercialName: '',
-    activityCode: '',
-    identifier: {
-      type: '',
-      id: ''
-    },
-    location: {
-      province: '',
-      canton: '',
-      district: '',
-      neighborhood: '',
-      details: ''
-    },
-    email: '',
-    fax: {
-      countryCode: '',
-      number: ''
-    },
-    phone: {
-      countryCode: '',
-      number: ''
-    }
-  }
+  conditionSale: '01',
+  paymentMethod: '01'
 };
+module.exports = {
+  document
+};
+// Modelo de Factura para validación y referencia de estructura
+// const FacturaModel = {
+//   emitter: {
+//     fullName: '',
+//     commercialName: '',
+//     activityCode: '',
+//     identifier: {
+//       type: '',
+//       id: ''
+//     },
+//     location: {
+//       province: '',
+//       canton: '',
+//       district: '',
+//       neighborhood: '',
+//       details: ''
+//     },
+//     email: '',
+//     fax: {
+//       countryCode: '',
+//       number: ''
+//     },
+//     phone: {
+//       countryCode: '',
+//       number: ''
+//     }
+//   },
+//   branch: '',
+//   terminal: '',
+//   documentName: '',
+//   providerId: '',
+//   countryCode: '',
+//   securityCode: '',
+//   activityCode: '',
+//   consecutiveIdentifier: '',
+//   ceSituation: '',
+//   orderLines: [
+//     {
+//       detail: '',
+//       unitaryPrice: 0,
+//       lineNumber: '',
+//       code: '',
+//       quantity: 0,
+//       measureUnit: '',
+//       totalAmount: 0,
+//       subTotal: 0,
+//       tax: {
+//         code: '',
+//         rateCode: '',
+//         rate: 0,
+//         amount: 0
+//       },
+//       totalOrderLineAmount: 0
+//     }
+//   ],
+//   referenceInfo: {},
+//   conditionSale: '',
+//   paymentMethod: '',
+//   currencyCode: '',
+//   exchangeRate: '',
+//   receiver: {
+//     fullName: '',
+//     commercialName: '',
+//     activityCode: '',
+//     identifier: {
+//       type: '',
+//       id: ''
+//     },
+//     location: {
+//       province: '',
+//       canton: '',
+//       district: '',
+//       neighborhood: '',
+//       details: ''
+//     },
+//     email: '',
+//     fax: {
+//       countryCode: '',
+//       number: ''
+//     },
+//     phone: {
+//       countryCode: '',
+//       number: ''
+//     }
+//   }
+// };
 
-module.exports = FacturaModel;
+// module.exports = FacturaModel;
 
 // const FacturaModel = {
 //   Clave: '',

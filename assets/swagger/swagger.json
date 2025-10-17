@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Facturación Hacienda",
+    "version": "1.0.0",
+    "description": "Documentación básica de los endpoints de facturación"
+  },
+  "paths": {
+    "/api/facturacion/estructura-factura": {
+      "get": {
+        "summary": "Obtener estructura de factura",
+        "responses": {
+          "200": { "description": "Estructura JSON" }
+        }
+      }
+    },
+    "/api/facturacion/emitir": {
+      "post": {
+        "summary": "Emitir factura",
+        "requestBody": { "required": true, "content": { "application/json": { } } },
+        "responses": { "200": { "description": "XML generado" }, "400": { "description": "Error de validación" } }
+      }
+    }
+  }
+}

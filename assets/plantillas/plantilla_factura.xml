@@ -1,0 +1,38 @@
+<FacturaElectronica>
+  <!-- Plantilla base para generar facturas electrónicas. Rellenar con los datos del objeto document -->
+  <Clave></Clave>
+  <NumeroConsecutivo></NumeroConsecutivo>
+  <FechaEmision></FechaEmision>
+  <Emisor>
+    <Nombre></Nombre>
+    <Identificacion>
+      <Tipo></Tipo>
+      <Numero></Numero>
+    </Identificacion>
+    <Ubicacion>
+      <Provincia></Provincia>
+      <Canton></Canton>
+      <Distrito></Distrito>
+      <OtrasSenas></OtrasSenas>
+    </Ubicacion>
+  </Emisor>
+  <Receptor>
+    <Nombre></Nombre>
+    <Identificacion>
+      <Tipo></Tipo>
+      <Numero></Numero>
+    </Identificacion>
+    <Ubicacion>
+      <Provincia></Provincia>
+      <Canton></Canton>
+      <Distrito></Distrito>
+      <OtrasSenas></OtrasSenas>
+    </Ubicacion>
+  </Receptor>
+  <DetalleServicio>
+    <!-- Lineas -->
+  </DetalleServicio>
+  <ResumenFactura>
+    <!-- Totales -->
+  </ResumenFactura>
+</FacturaElectronica>
