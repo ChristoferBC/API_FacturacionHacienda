@@ -1,31 +1,31 @@
-const express = require('express');
-const router = express.Router();
+// const express = require('express');
+// const router = express.Router();
 
-const facturacionController = require('../controllers/facturacionController');
-const { validarDocumentoCompleto } = require('../middlewares/validarDocumentoCompleto');
-const { validarConfirmacion } = require('../middlewares/validarConfirmacion');
-const { enviarEstructuraFactura } = require('../middlewares/enviarEstructuraFactura');
-const { sendXmlAttachment } = require('../controllers/facturacionController');
+// const facturacionController = require('../controllers/facturacionController');
+// const { validarDocumentoCompleto } = require('../middlewares/validarDocumentoCompleto');
+// const { validarConfirmacion } = require('../middlewares/validarConfirmacion');
+// const { enviarEstructuraFactura } = require('../middlewares/enviarEstructuraFactura');
+// const { sendXmlAttachment } = require('../controllers/facturacionController');
 
-// Obtener estructura de factura (middleware que responde)
-router.get('/estructura-factura', enviarEstructuraFactura);
+// // Obtener estructura de factura (middleware que responde)
+// router.get('/estructura-factura', enviarEstructuraFactura);
 
-// Emitir factura (valida y procesa)
-router.post('/emitir', validarDocumentoCompleto, facturacionController.emitirFactura);
+// // Emitir factura (valida y procesa)
+// router.post('/emitir', validarDocumentoCompleto, facturacionController.emitirFactura);
 
-// Guardar ejemplo de document validado en assets
-router.post('/guardar-ejemplo', validarDocumentoCompleto, facturacionController.saveDocumentExample);
+// // Guardar ejemplo de document validado en assets
+// router.post('/guardar-ejemplo', validarDocumentoCompleto, facturacionController.saveDocumentExample);
 
-// Descargar XML generado como attachment
-router.post('/download-xml', sendXmlAttachment);
+// // Descargar XML generado como attachment
+// router.post('/download-xml', sendXmlAttachment);
 
-// Confirmar comprobante (sendConfirmation)
-router.post('/confirmar', validarConfirmacion, facturacionController.confirmarComprobante);
+// // Confirmar comprobante (sendConfirmation)
+// router.post('/confirmar', validarConfirmacion, facturacionController.confirmarComprobante);
 
-// Consultar contribuyente (Hacienda AE)
-router.get('/contribuyente', facturacionController.consultarContribuyente);
+// // Consultar contribuyente (Hacienda AE)
+// router.get('/contribuyente', facturacionController.consultarContribuyente);
 
-module.exports = router;
+// module.exports = router;
 
 // const express = require('express');
 // const router = express.Router();

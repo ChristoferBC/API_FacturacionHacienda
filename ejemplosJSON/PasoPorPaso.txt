@@ -86,3 +86,26 @@
       - Revisa los ejemplos en la carpeta `examples/` para casos más completos (creación de notas, tiquetes, receptor messages).
       - Si quieres, puedo generar un archivo de ejemplo listo para ejecutar en tu proyecto.
   
+
+
+
+
+
+
+  # Construir la imagen
+docker build -t api-facturacion .
+
+# Ejecutar el contenedor
+docker run -p 8080:8080 --env-file .env api-facturacion
+
+# 1. Revisar cambios
+git status
+
+# 2. Agregar todos los archivos
+git add -A
+
+# 3. Hacer commit
+git commit -m "feat: agregar Dockerfile y configuración Docker"
+
+# 4. Subir a GitHub (si ya tienes el remote configurado)
+git push origin main

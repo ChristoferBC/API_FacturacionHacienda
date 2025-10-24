@@ -1,0 +1,18 @@
+# Archivos y carpetas a excluir del contexto de Docker
+node_modules
+npm-debug.log*
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.dockerignore
+
+# Certificados y archivos sensibles
+assets/certificados/*.p12
+assets/certificados/*.key
+
+# Archivos temporales
+*.tmp
+*.log
